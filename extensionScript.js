@@ -24,7 +24,6 @@ if (navigator.geolocation) {
           const weather = weatherAll.list;
           const now = new Date();
           const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-          console.log(weather);
           for (el of colheaders) {
             const dateKey = parseInt(el.querySelector("div[role='link']").getAttribute("data-datekey"), 10);
             const colDate = dateKeyToDate(dateKey);
@@ -37,9 +36,18 @@ if (navigator.geolocation) {
                 iconIds[weather[key].weather[0].icon] = !iconIds[weather[key].weather[0].icon] ? 1 : iconIds[weather[key].weather[0].icon] + 1;
               }
             }
-            console.log(tempPoints);
+            if (tempPoints.size === 0 || Object.keys(iconIds) === 0) continue;
             const avgTemp = Math.round((tempPoints.reduce((acc, temp) => acc + temp)) / tempPoints.length);
             console.log(colDate + ' ' + avgTemp);
+            let maxIdCnt = -1;
+            let maxId;
+            Object.keys(iconIds).map(id => {
+              if (iconIds[id] > maxIdCnt) {
+                maxIdCnt = iconIds[id];
+                maxId = id;
+              }
+            })
+            console.log(maxId);
             console.log(iconIds);
           }
         })
